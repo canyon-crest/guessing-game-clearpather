@@ -4,7 +4,7 @@ let totalWins = 0;
 let scores = [];
 let times = [];
 let range = 0;
-
+let wrongGuesses = 0;
 const playBtn = document.getElementById("playBtn");
 const guessBtn = document.getElementById("guessBtn");
 const giveUpBtn = document.getElementById("giveUpBtn");
@@ -65,6 +65,7 @@ updateDateDisplay();
 setInterval(updateDateDisplay, 1000);
 
 function play(){
+    wrongGuesses = 0;
     let levels = document.getElementsByName("level");
     for(let i = 0; i < levels.length; i++){
         if(levels[i].checked){
@@ -82,6 +83,7 @@ function play(){
 }
 
 function makeGuess(){
+    document.getElementById("Scream").play();
     let guessVal = parseInt(guess.value);
     if(isNaN(guessVal)){
         msg.textContent = "Please enter a valid number"; 
@@ -94,8 +96,13 @@ function makeGuess(){
         resetGame();
     }
     else if(guessVal < answer){
+        wrongGuesses++;
         msg.textContent = "Too low, try again.";
+        if (range!==3){
+            shake(wrongGuesses);
+        }
         let distance = Math.abs(guessVal - answer);
+       
         if (distance <= 2) {
             msg.textContent += " You're hot!";
         } else if (distance <= 5) {
@@ -106,6 +113,10 @@ function makeGuess(){
     }
     else{
         msg.textContent = "Too high, try again.";
+        wrongGuesses++;
+        if (range!==3){
+            shake(wrongGuesses);
+        }
         let distance = Math.abs(guessVal - answer);
         if (distance <= 2) {
             msg.textContent += " You're hot!";
@@ -159,4 +170,11 @@ function giveUp(){
     msg.textContent = "The correct answer was " + answer + ".";
     updateScore(range);
     resetGame();
+    document.getElementById("disappointmentSound").play();
+}
+function shake(intensity) {
+    document.body.classList.add("shake");
+    setTimeout(function() {
+        document.body.classList.remove("shake");
+    }, 500);
 }
