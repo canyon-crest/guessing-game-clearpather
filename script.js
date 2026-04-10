@@ -1,7 +1,8 @@
 let answer = 0;
 let guessCount = 0;
 let totalWins = 0; 
-const scores = [];
+let scores = [];
+let times = [];
 document.getElementById("playBtn").addEventListener("click", play); 
 document.getElementById("guessBtn").addEventListener("click", makeGuess); 
 function play(){
@@ -19,6 +20,7 @@ guessCount = 0;
 guessBtn.disabled = false; 
 giveUpBtn.disabled = false;
 playBtn.disabled = true;
+times.push(new Date()) 
 
 }
 
@@ -42,6 +44,11 @@ function makeGuess(){
     }
 }
 function updateScore(score){
+    times[times.length - 1] = new Date() - times.at(-1);  
+    let ft = document.getElementById("fastest");
+    ft.textContent = "Fastest Game: " + (Math.min(...times)/1000) .toFixed(2);
+    let avt = document.getElementById("avgTime");
+    avt.textContent = "Average Time: " + (times.reduce((sum,e)=>sum+e,0)/times.length/1000) .toFixed(2);
     totalWins++;
     scores.push(score);
     wins.textContent = "Total wins: " + scores.length;
