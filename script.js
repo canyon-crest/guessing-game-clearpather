@@ -24,11 +24,20 @@ msg.textContent = "Welcome, " + playerName + "! Please select a difficulty level
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
 
 function getDaySuffix(day) {
-    if (day > 3 && day < 21) return "" + day + "th";
-    if (day % 10 == 1) return "" + day + "st";
-    if (day % 10 == 2) return "" + day + "nd";
-    if (day % 10 == 3) return "" + day + "rd";
-    return "" + day + "th";
+    let dayMod100 = day % 100;
+    if (dayMod100 >= 11 && dayMod100 <= 13) {
+        return day + "th";
+    }
+    if (day % 10 === 1) {
+        return day + "st";
+    }
+    if (day % 10 === 2) {
+        return day + "nd";
+    }
+    if (day % 10 === 3) {
+        return day + "rd";
+    }
+    return day + "th";
 }
 
 function time() {
@@ -48,9 +57,12 @@ function time() {
     return monthName + " " + day + ", " + year + " " + hours + ":" + minutes + ":" + seconds;
 }
 
-setInterval(function() {
+function updateDateDisplay() {
     document.getElementById("date").textContent = time();
-}, 1000);
+}
+
+updateDateDisplay();
+setInterval(updateDateDisplay, 1000);
 
 function play(){
     let levels = document.getElementsByName("level");
