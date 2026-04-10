@@ -4,7 +4,7 @@ let totalWins = 0;
 let scores = [];
 let times = [];
 let range = 0;
- 
+
 const playBtn = document.getElementById("playBtn");
 const guessBtn = document.getElementById("guessBtn");
 const giveUpBtn = document.getElementById("giveUpBtn");
@@ -12,25 +12,25 @@ const msg = document.getElementById("msg");
 const wins = document.getElementById("wins");
 const avgScore = document.getElementById("avgScore");
 const guess = document.getElementById("guess");
- 
+
 playBtn.addEventListener("click", play); 
 guessBtn.addEventListener("click", makeGuess); 
 giveUpBtn.addEventListener("click", giveUp);
- 
+
 let playerName = prompt("Enter your name: ");
 playerName = playerName.charAt(0).toUpperCase() + playerName.slice(1).toLowerCase();
 msg.textContent = "Welcome, " + playerName + "! Please select a difficulty level and click Play to start.";
- 
+
 let months = ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"];
- 
+
 function getDaySuffix(day) {
-    if (day > 3 && day < 21) return day + "th";
-    if (day % 10 == 1) return day + "st";
-    if (day % 10 == 2) return day + "nd";
-    if (day % 10 == 3) return day + "rd";
-    return day + "th";
+    if (day > 3 && day < 21) return "" + day + "th";
+    if (day % 10 == 1) return "" + day + "st";
+    if (day % 10 == 2) return "" + day + "nd";
+    if (day % 10 == 3) return "" + day + "rd";
+    return "" + day + "th";
 }
- 
+
 function time() {
     let date = new Date();
     let monthName = months[date.getMonth()];
@@ -47,11 +47,11 @@ function time() {
     
     return monthName + " " + day + ", " + year + " " + hours + ":" + minutes + ":" + seconds;
 }
- 
+
 setInterval(function() {
     document.getElementById("date").textContent = time();
 }, 1000);
- 
+
 function play(){
     let levels = document.getElementsByName("level");
     for(let i = 0; i < levels.length; i++){
@@ -68,7 +68,7 @@ function play(){
     playBtn.disabled = true;
     times.push(new Date());
 }
- 
+
 function makeGuess(){
     let guessVal = parseInt(guess.value);
     if(isNaN(guessVal)){
@@ -104,7 +104,7 @@ function makeGuess(){
         }
     }
 }
- 
+
 function updateScore(score){
     times[times.length - 1] = new Date() - times.at(-1);  
     let ft = document.getElementById("fastest");
@@ -119,9 +119,9 @@ function updateScore(score){
         sum += scores[i];
     }
     avgScore.textContent = "Average Score: " + (sum / scores.length).toFixed(0);
- 
+
     scores.sort(function(a, b){ return a - b; });
- 
+
     let lb = document.getElementsByName("leaderboard"); 
     for(let i = 0; i < 3; i++){
         if(i < scores.length){
@@ -131,7 +131,7 @@ function updateScore(score){
         }
     }
 }
- 
+
 function resetGame(){
     guess.value = "";
     guessBtn.disabled = true;
@@ -142,7 +142,7 @@ function resetGame(){
         levels[i].disabled = false;
     }
 }
- 
+
 function giveUp(){
     msg.textContent = "The correct answer was " + answer + ".";
     updateScore(range);
